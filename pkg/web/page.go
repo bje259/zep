@@ -21,6 +21,7 @@ var LayoutTemplates = []string{
 //go:embed static/*
 //go:embed static/preline/*
 //go:embed static/js/*
+//go:embed static/docs/*
 var StaticFS embed.FS
 
 //go:embed templates/*

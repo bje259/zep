@@ -20,6 +20,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
 )
 
 const ReadHeaderTimeout = 5 * time.Second
@@ -70,6 +71,14 @@ func setupRouter(appState *models.AppState) *chi.Mux {
 		middleware.CleanPath,
 		SendVersion,
 		middleware.Heartbeat("/healthz"),
+		cors.Handler(cors.Options{
+			AllowedOrigins:   []string{"http://localhost:5173", "http://localhost:8000", "http://nlp:5557", "http://0.0.0.0:5557", "http://localhost:8080"}, // Use your own origin here
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+			ExposedHeaders:   []string{"Link"},
+			AllowCredentials: true,
+			MaxAge:           300, // Maximum value not ignored by any of major browsers
+		}),
 	)
 
 	// Only setup web routes if enabled
